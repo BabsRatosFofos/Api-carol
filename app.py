@@ -12,7 +12,7 @@ def inicio():
 
 @app.route('/usuarios', methods=['GET'])
 def listar_usuarios():
-    resposta = requests.get("https://api-usuarios-i4ye.onrender.com/usuarios")
+    resposta = requests.get("https://api-usuarios-7nqx.onrender.com/usuarios")
     return jsonify(resposta.json())
 
 @app.route("/<path:filename>")
