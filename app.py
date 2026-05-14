@@ -1,73 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS
+import requests
 
-app = Flask(__name__)
+app = Flask(_name_)
 
-livros = []
+CORS(app)
 
-@app.route('/livros', methods=['GET'])
-def listar_livros():
-    return jsonify(livros)
+@app.route("/")
+def inicio():
+    return send_from_directory(app.root_path, "index.html")
 
-@app.route('/livros/<int:id>', methods=['GET'])
-def buscar_livro(id):
-    for livro in livros:
-        if livro['id'] == id:
-            return jsonify(livro)
-    return {"erro": "Livro não encontrado"}, 404
+@app.route('/usuarios', methods=['GET'])
+def listar_usuarios():
+    resposta = requests.get("https://api-usuarios-i4ye.onrender.com/usuarios")
+    return jsonify(resposta.json())
 
-@app.route('/livros', methods=['POST'])
-def criar_livro():
-    dados = request.json
+@app.route("/<path:filename>")
+def static_files(filename):
+    return send_from_directory(app.root_path, filename)
 
-    if not dados:
-        return {"erro": "JSON vazio"}, 400
-
-    if not dados.get('título') or not dados.get('autor'):
-        return {"erro": "Título e autor são obrigatórios"}, 400
-
-    if dados.get('ano', 0) < 0:
-        return {"erro": "Ano inválido"}, 400
-
-    for l in livros:
-        if l['titulo'] == dados['titulo']:
-            return {"erro": "Livro já cadastrado"}, 400
-
-    novo_livro = {
-        "id": len(livros) + 1,
-        "título": dados['titulo'],
-        "autorP": dados['autor'],
-        "ano": dados['ano']
-    }
-
-    livros.append(novo_livro)
-
-    return {
-        "mensagem": "Livro cadastrado com sucesso",
-        "livro": novo_livro
-    }, 201
-
-@app.route('/livros/<int:id>', methods=['PUT'])
-def atualizar_livro(id):
-    dados = request.json
-
-    for livro in livros:
-        if livro['id'] == id:
-            livro['titulo'] = dados.get('titulo', livro['titulo'])
-            livro['autor'] = dados.get('autor', livro['autor'])
-            livro['ano'] = dados.get('ano', livro['ano'])
-
-            return {"mensagem": "Livro atualizado com sucesso", "livro": livro}
-
-    return {"erro": "Livro não encontrado"}, 404
-
-@app.route('/livros/<int:id>', methods=['DELETE'])
-def deletar_livro(id):
-    for livro in livros:
-        if livro['id'] == id:
-            livros.remove(livro)
-            return {"mensagem": "Livro removido com sucesso"}
-
-    return {"erro": "Livro não encontrado"}, 404
-
-if __name__ == '__main__':
+if _name_ == '_main_':
     app.run(debug=True)
