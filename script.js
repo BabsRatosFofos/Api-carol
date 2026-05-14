@@ -3,16 +3,12 @@ async function buscarUsuarios() {
   
     const usuarios = await resposta.json();
   
-    const corpo = document.getElementById("corpoTabela");
-    corpo.innerHTML = "";
-  
+    const lista = document.getElementById("listaUsuarios");
+    lista.innerHTML = "";
+
     usuarios.forEach(usuario => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${usuario.name}</td>
-        <td>${usuario.email}</td>
-        <td>${usuario.phone}</td>
-      `;
-      corpo.appendChild(tr);
+      const li = document.createElement("li");
+      li.textContent = `${usuario.name} - ${usuario.email} - ${usuario.phone}`;
+      lista.appendChild(li);
     });
   }
