@@ -1,19 +1,19 @@
 body {
-
     font-family: Arial;
     padding: 20px;
-  
-  }
-  
-  button {
-  
+}
+
+button {
+    background-color: rgb(40, 40, 161);
     padding: 10px;
     cursor: pointer;
-  
-  }
-  
-  li {
-  
+}
+
+li {
     margin: 10px 0;
-  
-  }
+}
+
+.text {
+    color: rgb(255, 243, 221);
+    font-size: 20px;
+}
